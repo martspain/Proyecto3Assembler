@@ -211,162 +211,161 @@ play:
 		/*Se utiliza r8 como contador para saber a que jugador le toca jugar*/
 		mov r8, #1
 		
-		playerTurn:
-			ldr r10,=numero_jugadores
-			ldr r10, [r10]
-			cmp r8, r10
-			ble throwDices
-			
-			bgt computerCheck
+	playerTurn:
+		ldr r10,=numero_jugadores
+		ldr r10, [r10]
+		cmp r8, r10
+		ble throwDices
 		
-		throwDices:
-			ldr r0,=instruccion_uno
-			mov r1, r8
-			bl printf
-			
-			/*Se solicita al usuario  presionar ENTER para continuar */
-			ldr r0,=string
-			ldr r1,=almacen
-			bl scanf
-			
-			b generateNumbers
-		
-		generateNumbers:
-			/*Aqui se utiliza la subrutina para generar numeros aleatorios*/
-			/*Se reservan r0 a r3 para el paso de parametros */
-			/*bl makeRandom*/
-			/*El valor generado retornara en r0*/
-			
-			/*------------------------------------*/
-			/*Como simulacion del primer dado se pondra un numero cualquiera en r0 (temporal)
-			Aqui debe de utilizarse la subrutina para obtener los numeros aleatorios*/
-			mov r0, #4
-			/*------------------------------------*/
-			
-			mov r5, r0
-			
-			/*------------------------------------*/
-			/*Como simulacion del segundo dado se pondra un numero cualquiera en r0 (temporal)*/
-			mov r0, #3
-			/*------------------------------------*/
-			
-			/*Ahora r5 tiene la suma de los valores de ambos dados*/
-			add r5, r5, r0
-			
-			ldr r0, =advance_info
-			mov r1, r5
-			bl printf
-			
-			/*Se añade la suma a la posicion actual de ambos*/
-			trackPositions:
-				cmp r8, #1
-				beq getPlayerOne
-				
-				cmp r8, #2
-				beq getPlayerTwo
-				
-				cmp r8, #3
-				beq getPlayerThree
-				
-				cmp r8, #4
-				beq getPlayerFour
-				
-				b getComputer
-			
-			getPlayerOne:
-				ldr r3,=posicion_juguno
-				ldr r3, [r3]
-			
-			getPlayerTwo:
-				ldr r3,=posicion_jugdos
-				ldr r3, [r3]
-			
-			getPlayerThree:
-				ldr r3,=posicion_jugtres
-				ldr r3, [r3]
-			
-			getPlayerFour:
-				ldr r3,=posicion_jugcuatro
-				ldr r3, [r3]
-				
-			getComputer:
-				ldr r3,=posicion_computa
-				ldr r3, [r3]
-			
-			add r3, r5, r3
-			
-			
-			b showTrack
-		
-		showTrack:
-			
-			ldr r9,=largo_pista
-			ldr r9, [r9]
-			
-			/*R7 tiene el contador para el recorrido del array*/
-			mov r7, #1
-			
-			showArray:
-				
-				/*Muestra el primer elemento*/
-				ldr r0,=string
-				ldr r1,=track
-				ldr r1, [r1]
-				bl printf 
-				
-				loopTrack:
-					mov r0, #4
-					
-					/*r6 tiene la posicion actual en el array*/
-					mul r6, r7, r0
-					
-					/*Si la posicion actial en el array es igual a la posicion actual del jugador muestra al jugador*/
-					cmp r6, r5
-					beq showPlayer
-					
-					/*Si no, muestra el elemento normalmente*/
-					ldr r0,=string
-					ldr r1,=track
-					add r1, r1, r7
-					ldr r1, [r1]
-					bl printf 
-					
-					/*Se suma uno al contador del array, y se compara para ver si ya termino de recorrerlo*/
-					add r7, #1
-					cmp r7, r9
-					ble loopTrack
-					bgt prepareTurn
-		
-		/*Muestra al jugador en el array y vuelve al recorrido*/
-		showPlayer:
-			ldr r0,=string
-			ldr r1,=player
-			ldr r1, [r1]
-			bl printf
-			
-			add r7, #1
-			cmp r7, r9
-			ble loopTrack
-			
-		computerCheck:
-			cmp r11, #1
-			beq computerTurn
-			blt repeatTurn
-		
-		computerTurn:
-			
-			b repeatTurn
-		
-		prepareTurn:
-			add r8, r8, #1
-			
-			b playerTurn
-		
-		repeatTurn:
-			mov r8, #1
-			
-			b playerTurn
+		bgt computerCheck
 	
+	throwDices:
+		ldr r0,=instruccion_uno
+		mov r1, r8
+		bl printf
+		
+		/*Se solicita al usuario  presionar ENTER para continuar */
+		ldr r0,=string
+		ldr r1,=almacen
+		bl scanf
+		
+		b generateNumbers
+	
+	generateNumbers:
+		/*Aqui se utiliza la subrutina para generar numeros aleatorios*/
+		/*Se reservan r0 a r3 para el paso de parametros */
+		/*bl makeRandom*/
+		/*El valor generado retornara en r0*/
+		
+		/*------------------------------------*/
+		/*Como simulacion del primer dado se pondra un numero cualquiera en r0 (temporal)
+		Aqui debe de utilizarse la subrutina para obtener los numeros aleatorios*/
+		mov r0, #4
+		/*------------------------------------*/
+		
+		mov r5, r0
+		
+		/*------------------------------------*/
+		/*Como simulacion del segundo dado se pondra un numero cualquiera en r0 (temporal)*/
+		mov r0, #3
+		/*------------------------------------*/
+		
+		/*Ahora r5 tiene la suma de los valores de ambos dados*/
+		add r5, r5, r0
+		
+		ldr r0, =advance_info
+		mov r1, r5
+		bl printf
+		
+	/*Se añade la suma a la posicion actual de ambos*/
+	trackPositions:
+		cmp r8, #1
+		beq getPlayerOne
+		
+		cmp r8, #2
+		beq getPlayerTwo
+		
+		cmp r8, #3
+		beq getPlayerThree
+		
+		cmp r8, #4
+		beq getPlayerFour
+		
+		b getComputer
+	
+	getPlayerOne:
+		ldr r3,=posicion_juguno
+		ldr r3, [r3]
+	
+	getPlayerTwo:
+		ldr r3,=posicion_jugdos
+		ldr r3, [r3]
+	
+	getPlayerThree:
+		ldr r3,=posicion_jugtres
+		ldr r3, [r3]
+	
+	getPlayerFour:
+		ldr r3,=posicion_jugcuatro
+		ldr r3, [r3]
+		
+	getComputer:
+		ldr r3,=posicion_computa
+		ldr r3, [r3]
+	
+	add r3, r5, r3
+	
+	b showTrack
+	
+	showTrack:
+		
+		ldr r9,=largo_pista
+		ldr r9, [r9]
+		
+		/*R7 tiene el contador para el recorrido del array*/
+		mov r7, #1
+		
+	showArray:
+		
+		/*Muestra el primer elemento*/
+		ldr r0,=string
+		ldr r1,=track
+		ldr r1, [r1]
+		bl printf 
+		
+	loopTrack:
+		mov r0, #4
+		
+		/*r6 tiene la posicion actual en el array*/
+		mul r6, r7, r0
+		
+		/*Si la posicion actial en el array es igual a la posicion actual del jugador muestra al jugador*/
+		cmp r6, r5
+		beq showPlayer
+		
+		/*Si no, muestra el elemento normalmente*/
+		ldr r0,=string
+		ldr r1,=track
+		add r1, r1, r7
+		ldr r1, [r1]
+		bl printf 
+		
+		/*Se suma uno al contador del array, y se compara para ver si ya termino de recorrerlo*/
+		add r7, #1
+		cmp r7, r9
+		ble loopTrack
+		bgt prepareTurn
+	
+	/*Muestra al jugador en el array y vuelve al recorrido*/
+	showPlayer:
+		ldr r0,=string
+		ldr r1,=player
+		ldr r1, [r1]
+		bl printf
+		
+		add r7, #1
+		cmp r7, r9
+		ble loopTrack
+		
+	computerCheck:
+		cmp r11, #1
+		beq computerTurn
+		blt repeatTurn
+	
+	computerTurn:
+		
+		b repeatTurn
+	
+	prepareTurn:
+		add r8, r8, #1
+		
+		b playerTurn
+	
+	repeatTurn:
+		mov r8, #1
+		
+		b playerTurn
+
 	showInGameError:
 		ldr r0,=error_message
 		bl puts
