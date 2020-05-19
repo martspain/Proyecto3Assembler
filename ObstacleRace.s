@@ -203,7 +203,7 @@ play:
 			str r9,[r0]
 			
 			/*Se resta uno porque esto servira como el indice del array mas adelante*/
-			sub r4, r4, #1
+			sub r9, r9, #1
 			
 			b startGame
 			
@@ -265,14 +265,13 @@ play:
 				cmp r8, #2
 				beq getPlayerTwo
 				
-				cmp r8, #2
+				cmp r8, #3
 				beq getPlayerThree
 				
-				cmp r8, #2
+				cmp r8, #4
 				beq getPlayerFour
 				
-				cmp r8, #2
-				beq getComputer
+				b getComputer
 			
 			getPlayerOne:
 				ldr r3,=posicion_juguno
@@ -295,6 +294,7 @@ play:
 				ldr r3, [r3]
 			
 			add r5, r5, r3
+			str r5, r3
 			
 			b showTrack
 		
