@@ -151,25 +151,25 @@ play:
 		
 		b showInGameErrorTwo
 		
-		computerYes:
-			/*Si se quiere usar la computadora se resta un jugador al numero de jugadores*/
-			sub r10, r10, #1
-			
-			/*Se guarda el numero de jugadores en una variable como backup*/
-			ldr r0,=numero_jugadores
-			str r10, [r0]
-			
-			/*Se utiliza r11 como bandera para saber si se juega con la computadora o no*/
-			mov r11, #1
-			
-			b raceLength
-			
-		computerNo:
-			
-			/*Se utiliza r11 como bandera para saber si se juega con la computadora o no*/
-			mov r11, #0
-			
-			b raceLength
+	computerYes:
+		/*Si se quiere usar la computadora se resta un jugador al numero de jugadores*/
+		sub r10, r10, #1
+		
+		/*Se guarda el numero de jugadores en una variable como backup*/
+		ldr r0,=numero_jugadores
+		str r10, [r0]
+		
+		/*Se utiliza r11 como bandera para saber si se juega con la computadora o no*/
+		mov r11, #1
+		
+		b raceLength
+		
+	computerNo:
+		
+		/*Se utiliza r11 como bandera para saber si se juega con la computadora o no*/
+		mov r11, #0
+		
+		b raceLength
 		
 	raceLength:
 		ldr r0,=opciones_tres
@@ -194,19 +194,19 @@ play:
 		
 		b showInGameErrorThree
 		
-		setTrackLength:
-			/*Se utiliza r9 para saber cuantos obstaculos debe contar*/
-			mov r9, r4
-			
-			/*Se guarda el largo de la pista en una variable como backup*/
-			ldr r0,=largo_pista
-			str r9,[r0]
-			
-			/*Se resta uno porque esto servira como el indice del array mas adelante*/
-			sub r9, r9, #1
-			
-			b startGame
-			
+	setTrackLength:
+		/*Se utiliza r9 para saber cuantos obstaculos debe contar*/
+		mov r9, r4
+		
+		/*Se guarda el largo de la pista en una variable como backup*/
+		ldr r0,=largo_pista
+		str r9,[r0]
+		
+		/*Se resta uno porque esto servira como el indice del array mas adelante*/
+		sub r9, r9, #1
+		
+		b startGame
+		
 	startGame:
 		/*Se utiliza r8 como contador para saber a que jugador le toca jugar*/
 		mov r8, #1
