@@ -293,8 +293,8 @@ play:
 				ldr r3,=posicion_computa
 				ldr r3, [r3]
 			
-			add r5, r5, r3
-			str r5, r3
+			add r3, r5, r3
+			
 			
 			b showTrack
 		
