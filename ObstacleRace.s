@@ -413,7 +413,7 @@ titulo: 			.asciz "Universidad del Valle de Guatemala \nCarrera de Obstáculos \
 opciones: 			.asciz "---------------- \nMenu de opciones \n---------------- \n1. Jugar \n2. Mostrar Ascii Art \n3. Salir... \n"
 opciones_uno: 		.asciz "---------------- \nCuantos jugadores entraran a la carrera? \n---------------- \n1. Uno \n2. Dos \n3. Tres \n4. Cuatro \n"
 opciones_dos: 		.asciz "---------------- \nDesea incluir a la computadora en la carrera? \n---------------- \n1. Si \n2. No \n"
-opciones_tres: 		.asciz "Porfavor, ingrese el numero de obstaculos de la carrera (minimo 12 y maximo 50): "
+opciones_tres: 		.asciz "Porfavor, ingrese el numero de obstaculos de la carrera (minimo 12 y maximo 50): \n"
 instruccion_uno: 	.asciz "Jugador %d presione ENTER para tirar los dados... "
 error_message: 		.asciz "Error: ingrese una opcion valida... \n"
 error_message_two: 	.asciz "Error:  \n"
