@@ -175,13 +175,13 @@ play:
 		ldr r0,=opciones_tres
 		bl puts
 		
-		/*Se solicita la opcion al usuario y se almacena en variable 'almacen' */
+		/*Se solicita la opcion al usuario y se almacena en variable 'largo_pista' */
 		ldr r0,=decimal
-		ldr r1,=almacen
+		ldr r1,=largo_pista
 		bl scanf
 		
-		/*Se guarda el valor de 'almacen' en r4*/
-		ldr r4,=almacen
+		/*Se guarda el valor de 'largo_pista' en r4*/
+		ldr r4,=largo_pista
 		ldr r4,[r4]
 		
 		cmp r4, #12
@@ -197,10 +197,6 @@ play:
 	setTrackLength:
 		/*Se utiliza r9 para saber cuantos obstaculos debe contar*/
 		mov r9, r4
-		
-		/*Se guarda el largo de la pista en una variable como backup*/
-		ldr r0,=largo_pista
-		str r9,[r0]
 		
 		/*Se resta uno porque esto servira como el indice del array mas adelante*/
 		sub r9, r9, #1
@@ -233,25 +229,22 @@ play:
 	
 	generateNumbers:
 		/*Aqui se utiliza la subrutina para generar numeros aleatorios*/
-		/*Se reservan r0 a r3 para el paso de parametros */
-		/*bl makeRandom*/
-		/*El valor generado retornara en r0*/
+		/*Se reserva r12 para el paso de parametros (numero maximo) */
+		/*bl RANDOM*/
+		/*El valor generado retornara en r12*/
 		
-		/*------------------------------------*/
-		/*Como simulacion del primer dado se pondra un numero cualquiera en r0 (temporal)
-		Aqui debe de utilizarse la subrutina para obtener los numeros aleatorios*/
-		mov r0, #4
-		/*------------------------------------*/
+		mov r5, #0
 		
-		mov r5, r0
+		mov r12, #6
+		bl RANDOM
 		
-		/*------------------------------------*/
-		/*Como simulacion del segundo dado se pondra un numero cualquiera en r0 (temporal)*/
-		mov r0, #3
-		/*------------------------------------*/
+		add r5, r5, r12
+		
+		mov r12, #6
+		bl RANDOM 
 		
 		/*Ahora r5 tiene la suma de los valores de ambos dados*/
-		add r5, r5, r0
+		add r5, r5, r12
 		
 		ldr r0, =advance_info
 		mov r1, r5
@@ -298,9 +291,6 @@ play:
 	b showTrack
 	
 	showTrack:
-		
-		ldr r9,=largo_pista
-		ldr r9, [r9]
 		
 		/*R7 tiene el contador para el recorrido del array*/
 		mov r7, #1
