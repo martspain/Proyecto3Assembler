@@ -202,8 +202,6 @@ play:
 		/*Se resta uno porque esto servira como el indice del array mas adelante*/
 		sub r9, r9, #1
 		
-		b startGame
-		
 	startGame:
 		/*Se utiliza r8 como contador para saber a que jugador le toca jugar*/
 		mov r8, #1
