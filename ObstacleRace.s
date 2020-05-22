@@ -190,6 +190,7 @@ play:
 		cmp r4, #50
 		bgt showInGameErrorThree
 		
+		cmp r4, #50
 		ble setTrackLength
 		
 		b showInGameErrorThree
