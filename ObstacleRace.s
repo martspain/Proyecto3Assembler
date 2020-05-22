@@ -223,8 +223,6 @@ play:
 		ldr r0,=string
 		ldr r1,=almacen
 		bl scanf
-		
-		b generateNumbers
 	
 	generateNumbers:
 		/*Aqui se utiliza la subrutina para generar numeros aleatorios*/
