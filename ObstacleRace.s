@@ -267,26 +267,45 @@ play:
 	getPlayerOne:
 		ldr r3,=posicion_juguno
 		ldr r3, [r3]
+		add r2, r5, r3
+		ldr r3, =posicion_juguno
+		str r2, [r3]
+		
+		b showTrack
 	
 	getPlayerTwo:
 		ldr r3,=posicion_jugdos
 		ldr r3, [r3]
+		add r2, r5, r3
+		ldr r3, =posicion_jugdos
+		str r2, [r3]
+		
+		b showTrack
 	
 	getPlayerThree:
 		ldr r3,=posicion_jugtres
 		ldr r3, [r3]
+		add r2, r5, r3
+		ldr r3, =posicion_jugtres
+		str r2, [r3]
+		
+		b showTrack
 	
 	getPlayerFour:
 		ldr r3,=posicion_jugcuatro
 		ldr r3, [r3]
+		add r2, r5, r3
+		ldr r3, =posicion_jugcuatro
+		str r2, [r3]
+		
+		b showTrack
 		
 	getComputer:
 		ldr r3,=posicion_computa
 		ldr r3, [r3]
-	
-	add r3, r5, r3
-	
-	b showTrack
+		add r2, r5, r3
+		ldr r3, =posicion_computa
+		str r2, [r3]
 	
 	showTrack:
 		
