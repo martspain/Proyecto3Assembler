@@ -333,7 +333,7 @@ play:
 		/*Si no, muestra el elemento normalmente*/
 		ldr r0,=string
 		ldr r1,=track
-		add r1, r1, r7
+		add r1, r1, r6
 		ldr r1, [r1]
 		bl printf 
 		
