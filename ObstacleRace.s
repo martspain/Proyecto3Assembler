@@ -7,7 +7,7 @@ Universidad Del Valle de Guatemala
 
 Autores:
 - Diana Sosa			Carné: 
-- Sebastián Maldonado 	Carné: 
+- Sebastián Maldonado 	Carné: 18003
 - Martín España 		Carné: 19258
 
 Fecha de creación: 17/05/2020
@@ -112,6 +112,9 @@ play:
 		ldr r4,=almacen
 		ldr r4,[r4]
 		
+		ldr r0,=numero_jugadores
+		str r4,[r0]
+		
 		cmp r4, #1
 		moveq r10, #1
 		beq computerParticipation
@@ -175,6 +178,7 @@ play:
 		ldr r0,=opciones_tres
 		bl puts
 		
+		
 		/*Se solicita la opcion al usuario y se almacena en variable 'largo_pista' */
 		ldr r0,=decimal
 		ldr r1,=largo_pista
@@ -183,7 +187,6 @@ play:
 		/*Se guarda el valor de 'largo_pista' en r4*/
 		ldr r4,=largo_pista
 		ldr r4,[r4]
-		
 		cmp r4, #12
 		blt showInGameErrorThree
 		
@@ -192,7 +195,6 @@ play:
 		
 		cmp r4, #50
 		ble setTrackLength
-		
 		b showInGameErrorThree
 		
 	setTrackLength:
@@ -218,7 +220,6 @@ play:
 		ldr r0,=instruccion_uno
 		mov r1, r8
 		bl printf
-		
 		/*Se solicita al usuario  presionar ENTER para continuar */
 		ldr r0,=string
 		ldr r1,=almacen
@@ -411,6 +412,6 @@ string: 			.asciz "%s"
 player: 			.asciz "O"
 track:				.asciz "_","_","_","_","_","_","_","_","_","_","_","_","_","_","_","_","_","_","_","_","_","_","_","_","_","_","_","_","_","_","_","_","_","_","_","_","_","_","_","_","_","_","_","_","_","_","_","_","_","_"
 asciiArt:		 	.asciz "            O O \n           dO Ob \n          dOO OOO \n         dOOO OOOb \n        dOOOO OOOOb \n        OOOOO OOOOO \n        OOOOO OOOOO \n        OOOOO OOOOO \n        YOOOO OOOOO \n         YOOO OOOP \n    oOOOOOOOOOOOOb \n  oOOOOOOOOOOOOOOOb \n oOOOb dOOOOOOOOOOO \nOOOOOOOOOOOOOOOOOOO \nOOOOOOOOOOOOOOOOOOP \nOOOOOOOOOOOOOOOOOP \n YOOOOOOOOOOOOOOP \n   YOOOOOOOOOOOP \n  %%%%%%%%%%%%%% \n %%%%%%OOOjgsOOO \n"
-
+prueba:				.asciz "Prueba"
 
 	
