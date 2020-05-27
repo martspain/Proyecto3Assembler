@@ -230,6 +230,23 @@ play:
 			
 		b menu
 		
+	showInGameError:
+		ldr r0,=error_message
+		bl puts
+		
+		b numberOfPlayers
+	
+	showInGameErrorTwo:
+		ldr r0,=error_message
+		bl puts
+		
+		b computerParticipation
+		
+	showInGameErrorThree:
+		ldr r0,=error_message
+		bl puts
+		
+		b raceLength
 
 exitGame:
 	mov r0,#0
