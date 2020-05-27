@@ -226,6 +226,7 @@ play:
 			bl scanf
 			
 			ldr r0, =prueba
+			bl puts
 			
 		b menu
 		
