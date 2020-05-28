@@ -220,15 +220,36 @@ play:
 			ldr r1, [r1]
 			bl printf
 			
+			/*Limpia el buffer*/
+			bl getchar 
+			
 			/*Recopila el enter del usuario*/
 			bl getchar
 			
-			bl getchar
+		throwDices:
+			/*Aqui se utiliza la subrutina para generar numeros aleatorios*/
+			/*Se reserva r12 para el paso de parametros (numero maximo) */
+			/*bl RANDOM*/
+			/*El valor generado retornara en r12*/
 			
-			ldr r0, =prueba
-			bl puts
+			mov r5, #0
 			
-		b menu
+			mov r12, #6
+			bl RANDOM
+			
+			add r5, r5, r12
+			
+			mov r12, #6
+			bl RANDOM 
+			
+			/*Ahora r5 tiene la suma de los valores de ambos dados*/
+			add r5, r5, r12
+			
+			ldr r0, =advance_info
+			mov r1, r5
+			bl printf
+			
+			b menu
 		
 	showInGameError:
 		ldr r0,=error_message
