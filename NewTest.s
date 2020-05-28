@@ -429,7 +429,7 @@ despedida: 			.asciz "***GAME OVER***GAME OVER***GAME OVER*** \nGano el jugador 
 advance_info:		.asciz "WOW! Los dados no mienten! Avanzas %d espacios... \n"
 decimal:			.asciz "%d"
 string: 			.asciz "%s"
-char				.asciz "%c "
+char:				.asciz "%c "
 player: 			.asciz "O"
 track:				.byte "_","_","_","_","_","_","_","_","_","_","_","_","_","_","_","_","_","_","_","_","_","_","_","_","_","_","_","_","_","_","_","_","_","_","_","_","_","_","_","_","_","_","_","_","_","_","_","_","_","_"
 asciiArt:		 	.asciz "            O O \n           dO Ob \n          dOO OOO \n         dOOO OOOb \n        dOOOO OOOOb \n        OOOOO OOOOO \n        OOOOO OOOOO \n        OOOOO OOOOO \n        YOOOO OOOOO \n         YOOO OOOP \n    oOOOOOOOOOOOOb \n  oOOOOOOOOOOOOOOOb \n oOOOb dOOOOOOOOOOO \nOOOOOOOOOOOOOOOOOOO \nOOOOOOOOOOOOOOOOOOP \nOOOOOOOOOOOOOOOOOP \n YOOOOOOOOOOOOOOP \n   YOOOOOOOOOOOP \n  %%%%%%%%%%%%%% \n %%%%%%OOOjgsOOO \n"
