@@ -222,8 +222,6 @@ play:
 			
 			/*Recopila el enter del usuario*/
 			bl getchar
-			ldr r1,=jump_line
-			str r0, [r1]
 			
 			ldr r0, =prueba
 			bl puts
@@ -272,7 +270,6 @@ posicion_jugtres: 	.word 0
 posicion_jugcuatro:	.word 0
 posicion_computa:	.word 0
 turno_actual:       .word 0
-jump_line           .byte ' '
 
 /*Mensajes para mostrar en pantalla*/
 titulo: 			.asciz "Universidad del Valle de Guatemala \nCarrera de Obstáculos \nAutores: Diana Sosa, Sebastián Maldonado y Martín España \n"
