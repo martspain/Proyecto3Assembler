@@ -294,7 +294,7 @@ play:
 					
 					mov r10, r0
 					
-					b prepareTrack
+					b showP1Track
 				
 				addPTwo:
 					mov r0, #0
@@ -309,7 +309,7 @@ play:
 					
 					mov r10, r0
 					
-					b prepareTrack
+					b showP2Track
 					
 				addPThree:
 					mov r0, #0
@@ -324,7 +324,7 @@ play:
 					
 					mov r10, r0
 					
-					b prepareTrack
+					b showP3Track
 					
 				addPFour:
 					mov r0, #0
@@ -339,7 +339,7 @@ play:
 					
 					mov r10, r0
 					
-					b prepareTrack
+					b showP4Track
 					
 				addComputer:
 					mov r0, #0
@@ -353,6 +353,8 @@ play:
 					str r0, [r1]
 					
 					mov r10, r0
+					
+					b showCPTrack
 			
 			showP1Track:
 				ldr r0, =posicion_juguno
@@ -376,6 +378,14 @@ play:
 					ble loopOne
 					
 					b changeTurn
+			showP2Track:
+				b menu
+			showP3Track:
+				b menu
+			showP4Track:
+				b menu
+			showCPTrack:
+				b menu
 			
 			showPlayer:
 				ldr r0, =player
