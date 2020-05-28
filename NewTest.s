@@ -354,94 +354,24 @@ play:
 					
 					mov r10, r0
 			
-			prepareTrack:
-				/*Indice del array*/
-				mov r6, #0
+			showP1Track:
+				ldr r0, =posicion_juguno
+				ldr r1, [r0]
 				
-				/*Multiplo de 4*/
-				mov r2, #4
+				ldr r7, =track
+				add r6, r7, #4
 				
-				/*Numero de iteracion*/
-				mov r7, #0
-				
-				/*Longitud del array*/
-				ldr r9, =numero_jugadores
-				ldr r9, [r9]
-				
-			showTrack:
-				
-				/* Offset del array*/
-				mul r6, r7, r2
-				
-				ldr r1, =largo_pista
-				ldr r1, [r1]
-				cmp r1, r7
-				beq checkStatus
-				
-				cmp r10, r7
-				beq showPlayer
-				b showObstacle
-				
-				showObstacle:
-					
-					ldr r0, =string
-					ldr r1, =track
-					add r1, r1, r6
+				loopOne:
+					ldrb r1,[r6],#-1
+					ldr r0,=char
 					bl printf
 					
-					add r7, r7, #1
-					
-					b showTrack
-					
-				showPlayer:
-					ldr r0,=string
-					ldr r1,=player
-					ldr r1, [r1]
-					bl printf
-					
-					add r7, r7, #1
-					
-					b showTrack
-				
-			checkStatus:
-				ldr r0, =largo_pista
-				ldr r0, [r0]
-				cmp r10, r0
-				beq showWinner
+					cmp r6, r7
+					bge loopOne
 			
-			changeTurn:
-				ldr r0, =turno_actual
-				ldr r0, [r0]
-				ldr r1, =numero_jugadores
-				ldr r1, [r1]
-				cmp r0, r1
-				ble forPlayers
-				
-				bgt forComputer
-				
-				forPlayers:
-					ldr r0, =turno_actual
-					ldr r1, [r0]
-					add r1, r1, #1
-					str r1, [r0]
+			b menu
 					
-					b loopGame
-				
-				forComputer:
-					cmp r11, #1
-					beq loopGame
 					
-					ldr r0, =turno_actual
-					mov r1, #1
-					str r1, [r0]
-					b loopGame
-			showWinner:
-				ldr r0, =despedida
-				ldr r1, =turno_actual
-				ldr r1, [r1]
-				bl printf
-				
-				b exitGame
 		
 	showInGameError:
 		ldr r0,=error_message
@@ -499,7 +429,8 @@ despedida: 			.asciz "***GAME OVER***GAME OVER***GAME OVER*** \nGano el jugador 
 advance_info:		.asciz "WOW! Los dados no mienten! Avanzas %d espacios... \n"
 decimal:			.asciz "%d"
 string: 			.asciz "%s"
+char				.asciz "%c "
 player: 			.asciz "O"
-track:				.asciz "_","_","_","_","_","_","_","_","_","_","_","_","_","_","_","_","_","_","_","_","_","_","_","_","_","_","_","_","_","_","_","_","_","_","_","_","_","_","_","_","_","_","_","_","_","_","_","_","_","_"
+track:				.byte "_","_","_","_","_","_","_","_","_","_","_","_","_","_","_","_","_","_","_","_","_","_","_","_","_","_","_","_","_","_","_","_","_","_","_","_","_","_","_","_","_","_","_","_","_","_","_","_","_","_"
 asciiArt:		 	.asciz "            O O \n           dO Ob \n          dOO OOO \n         dOOO OOOb \n        dOOOO OOOOb \n        OOOOO OOOOO \n        OOOOO OOOOO \n        OOOOO OOOOO \n        YOOOO OOOOO \n         YOOO OOOP \n    oOOOOOOOOOOOOb \n  oOOOOOOOOOOOOOOOb \n oOOOb dOOOOOOOOOOO \nOOOOOOOOOOOOOOOOOOO \nOOOOOOOOOOOOOOOOOOP \nOOOOOOOOOOOOOOOOOP \n YOOOOOOOOOOOOOOP \n   YOOOOOOOOOOOP \n  %%%%%%%%%%%%%% \n %%%%%%OOOjgsOOO \n"
 prueba:				.asciz "Prueba"
