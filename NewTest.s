@@ -409,7 +409,15 @@ play:
 					str r3, [r0]
 					
 					b loopGame
+			
+			doYourThingComputer:
+				/*Hacer el proceso automata de la computadora*/
 				
+				ldr r0, =turno_actual
+				mov r3, #0
+				str r3, [r0]
+				
+				b loopGame
 	showInGameError:
 		ldr r0,=error_message
 		bl puts
