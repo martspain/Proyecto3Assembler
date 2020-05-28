@@ -362,6 +362,7 @@ play:
 				
 				/*Maximo del loop*/
 				ldr r5, =largo_pista
+				ldr r5, [r5]
 				
 				/*Contador del loop*/
 				mov r6, #1
@@ -486,6 +487,6 @@ decimal:			.asciz "%d"
 string: 			.asciz "%s"
 char:				.asciz "%c "
 player: 			.asciz "O"
-track:				.asciz "_"
+track:				.ascii "_"
 asciiArt:		 	.asciz "            O O \n           dO Ob \n          dOO OOO \n         dOOO OOOb \n        dOOOO OOOOb \n        OOOOO OOOOO \n        OOOOO OOOOO \n        OOOOO OOOOO \n        YOOOO OOOOO \n         YOOO OOOP \n    oOOOOOOOOOOOOb \n  oOOOOOOOOOOOOOOOb \n oOOOb dOOOOOOOOOOO \nOOOOOOOOOOOOOOOOOOO \nOOOOOOOOOOOOOOOOOOP \nOOOOOOOOOOOOOOOOOP \n YOOOOOOOOOOOOOOP \n   YOOOOOOOOOOOP \n  %%%%%%%%%%%%%% \n %%%%%%OOOjgsOOO \n"
 prueba:				.asciz "Prueba"
