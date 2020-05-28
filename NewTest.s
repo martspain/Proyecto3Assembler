@@ -223,6 +223,8 @@ play:
 			/*Recopila el enter del usuario*/
 			bl getchar
 			
+			bl getchar
+			
 			ldr r0, =prueba
 			bl puts
 			
