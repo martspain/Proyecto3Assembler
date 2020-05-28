@@ -376,7 +376,7 @@ play:
 				ldr r1, =largo_pista
 				ldr r1, [r1]
 				cmp r1, r7
-				checkStatus
+				beq checkStatus
 				
 				cmp r10, r7
 				beq showPlayer
@@ -428,7 +428,7 @@ play:
 					b loopGame
 				
 				forComputer:
-					cmp r11 #1
+					cmp r11, #1
 					beq loopGame
 					
 					ldr r0, =turno_actual
