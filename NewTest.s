@@ -98,6 +98,23 @@ showError:
 
 play:
 
+	/*Se inicializan las posiciones de los jugadores*/
+	ldr r0, =posicion_juguno
+	mov r1, #0
+	str r1, [r0]
+	ldr r0, =posicion_jugdos
+	mov r1, #0
+	str r1, [r0]
+	ldr r0, =posicion_jugtres
+	mov r1, #0
+	str r1, [r0]
+	ldr r0, =posicion_jugcuatro
+	mov r1, #0
+	str r1, [r0]
+	ldr r0, =posicion_computa
+	mov r1, #0
+	str r1, [r0]
+	
 	numberOfPlayers:
 		/*Se solicita el numero de jugadores*/
 		ldr r0,=opciones_uno
@@ -203,15 +220,9 @@ play:
 		sub r9, r9, #1
 		
 	startGame:
-		mov r8, #0
-		mov r6, #0
-		mov r2, #4
 		mov r5, #1
 		ldr r0, =turno_actual
 		str r5, [r0]
-		
-		/* Offset del array*/
-		mul r6, r8, r2
 		
 		loopGame:
 			/*Muestra el turno actual*/
@@ -226,30 +237,211 @@ play:
 			/*Recopila el enter del usuario*/
 			bl getchar
 			
-		throwDices:
-			/*Aqui se utiliza la subrutina para generar numeros aleatorios*/
-			/*Se reserva r12 para el paso de parametros (numero maximo) */
-			/*bl RANDOM*/
-			/*El valor generado retornara en r12*/
+			throwDices:
+				/*Aqui se utiliza la subrutina para generar numeros aleatorios*/
+				/*Se reserva r12 para el paso de parametros (numero maximo) */
+				/*bl RANDOM*/
+				/*El valor generado retornara en r12*/
+				
+				mov r5, #0
+				
+				mov r12, #6
+				bl RANDOM
+				
+				add r5, r5, r12
+				
+				mov r12, #6
+				bl RANDOM 
+				
+				/*Ahora r5 tiene la suma de los valores de ambos dados*/
+				add r5, r5, r12
+				
+				ldr r0, =advance_info
+				mov r1, r5
+				bl printf
 			
-			mov r5, #0
+				ldr r3, =turno_actual
+				ldr r3, [r3]
+				
+				cmp r3, #1
+				beq addPOne
+				
+				cmp r3, #2
+				beq addPTwo
+				
+				cmp r3, #3
+				beq addPThree
+				
+				cmp r3, #4
+				beq addPFour
+				
+				ldr r1, =numero_jugadores
+				ldr r1, [r1]
+				
+				cmp r3, r1
+				bgt addComputer
+				
+				addPOne:
+					mov r0, #0
+				
+					ldr r1, =posicion_juguno
+					ldr r1, [r1]
+					
+					add r0, r1, r5
+					
+					ldr r1, =posicion_juguno
+					str r0, [r1]
+					
+					mov r10, r0
+					
+					b prepareTrack
+				
+				addPTwo:
+					mov r0, #0
+				
+					ldr r1, =posicion_jugdos
+					ldr r1, [r1]
+					
+					add r0, r1, r5
+					
+					ldr r1, =posicion_jugdos
+					str r0, [r1]
+					
+					mov r10, r0
+					
+					b prepareTrack
+					
+				addPThree:
+					mov r0, #0
+				
+					ldr r1, =posicion_jugtres
+					ldr r1, [r1]
+					
+					add r0, r1, r5
+					
+					ldr r1, =posicion_jugtres
+					str r0, [r1]
+					
+					mov r10, r0
+					
+					b prepareTrack
+					
+				addPFour:
+					mov r0, #0
+				
+					ldr r1, =posicion_jugcuatro
+					ldr r1, [r1]
+					
+					add r0, r1, r5
+					
+					ldr r1, =posicion_jugcuatro
+					str r0, [r1]
+					
+					mov r10, r0
+					
+					b prepareTrack
+					
+				addComputer:
+					mov r0, #0
+				
+					ldr r1, =posicion_computa
+					ldr r1, [r1]
+					
+					add r0, r1, r5
+					
+					ldr r1, =posicion_computa
+					str r0, [r1]
+					
+					mov r10, r0
 			
-			mov r12, #6
-			bl RANDOM
+			prepareTrack:
+				/*Indice del array*/
+				mov r6, #0
+				
+				/*Multiplo de 4*/
+				mov r2, #4
+				
+				/*Numero de iteracion*/
+				mov r7, #0
+				
+				/*Longitud del array*/
+				ldr r9, =numero_jugadores
+				ldr r9, [r9]
+				
+			showTrack:
+				
+				/* Offset del array*/
+				mul r6, r7, r2
+				
+				ldr r1, =largo_pista
+				ldr r1, [r1]
+				cmp r1, r7
+				checkStatus
+				
+				cmp r10, r7
+				beq showPlayer
+				b showObstacle
+				
+				showObstacle:
+					
+					ldr r0, =string
+					ldr r1, =track
+					add r1, r1, r6
+					bl printf
+					
+					add r7, r7, #1
+					
+					b showTrack
+					
+				showPlayer:
+					ldr r0,=string
+					ldr r1,=player
+					ldr r1, [r1]
+					bl printf
+					
+					add r7, r7, #1
+					
+					b showTrack
+				
+			checkStatus:
+				ldr r0, =largo_pista
+				ldr r0, [r0]
+				cmp r10, r0
+				beq showWinner
 			
-			add r5, r5, r12
-			
-			mov r12, #6
-			bl RANDOM 
-			
-			/*Ahora r5 tiene la suma de los valores de ambos dados*/
-			add r5, r5, r12
-			
-			ldr r0, =advance_info
-			mov r1, r5
-			bl printf
-			
-			b menu
+			changeTurn:
+				ldr r0, =turno_actual
+				ldr r0, [r0]
+				ldr r1, =numero_jugadores
+				ldr r1, [r1]
+				cmp r0, r1
+				ble forPlayers
+				
+				bgt forComputer
+				
+				forPlayers:
+					ldr r0, =turno_actual
+					ldr r1, [r0]
+					add r1, r1, #1
+					str r1, [r0]
+					
+					b loopGame
+				
+				forComputer:
+					cmp r11 #1
+					beq loopGame
+					
+					ldr r0, =turno_actual
+					mov r1, #1
+					str r1, [r0]
+					b loopGame
+			showWinner:
+				ldr r0, =despedida
+				ldr r1, =turno_actual
+				ldr r1, [r1]
+				bl printf
+				
+				b exitGame
 		
 	showInGameError:
 		ldr r0,=error_message
