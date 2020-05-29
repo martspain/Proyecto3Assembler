@@ -369,7 +369,7 @@ play:
 				
 				loopOne:
 					cmp r8, r6
-					beq showPlayer
+					bleq showPlayer
 					
 					ldr r0, =track
 					bl puts
@@ -390,7 +390,11 @@ play:
 			
 			showPlayer:
 				ldr r0, =player
-				bl puts
+				bl puts 
+				
+				cmp r6, r5
+				addle r6, r6, #1
+				ble loopOne
 			
 			changeTurn:
 				ldr r0, =turno_actual
