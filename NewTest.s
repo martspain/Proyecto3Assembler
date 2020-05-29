@@ -397,7 +397,7 @@ play:
 					ldr r9, =posicion_juguno
 					ldr r9, [r9]
 					cmp r9, r5
-					beq winnerProcess
+					bge winnerProcess
 				
 					/*Ultimo recurso para evitar errores: cambia de turno*/
 					b changeTurn
@@ -442,7 +442,7 @@ play:
 					ldr r9, =posicion_jugdos
 					ldr r9, [r9]
 					cmp r9, r5
-					beq winnerProcess
+					bge winnerProcess
 				
 					b changeTurn
 			showP3Track:
@@ -486,7 +486,7 @@ play:
 					ldr r9, =posicion_jugtres
 					ldr r9, [r9]
 					cmp r9, r5
-					beq winnerProcess
+					bge winnerProcess
 				
 					/*Ultimo recurso para evitar errores: cambia de turno*/
 					b changeTurn
@@ -531,7 +531,7 @@ play:
 					ldr r9, =posicion_jugcuatro
 					ldr r9, [r9]
 					cmp r9, r5
-					beq winnerProcess
+					bge winnerProcess
 				
 					/*Ultimo recurso para evitar errores: cambia de turno*/
 					b changeTurn
