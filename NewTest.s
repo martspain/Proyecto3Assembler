@@ -368,33 +368,175 @@ play:
 				mov r6, #1
 				
 				loopOne:
+					/*Si el iterador es igual a la posicion del jugador muestra al jugador*/
 					cmp r8, r6
-					bleq showPlayer
+					beq showPlayerOne
 					
+					/*Si no, muestra el obstaculo siguiente*/
 					ldr r0, =track
 					bl puts
 					
+					/*Verifica que aun no se haya terminado de mostrar la pista*/
 					cmp r6, r5
 					addle r6, r6, #1
 					ble loopOne
 					
+					/*Si ya se termino de mostrar la pista y no ha ganado se cambia de turno*/
 					b changeTurn
+				
+				showPlayerOne:
+					ldr r0, =playerOne
+					bl puts 
+					
+					/*Compara el iterador con el largo de la pista para ver si debe repetir el loop*/
+					cmp r6, r5
+					addlt r6, r6, #1
+					blt loopOne
+					
+					/*Verifica si el jugador ya gano*/
+					ldr r9, =posicion_juguno
+					ldr r9, [r9]
+					cmp r9, r5
+					beq winnerProcess
+				
+					/*Ultimo recurso para evitar errores: cambia de turno*/
+					b changeTurn
+
 			showP2Track:
-				b menu
+				ldr r0, =posicion_jugdos
+				ldr r8, [r0]
+				
+				/*Maximo del loop*/
+				ldr r5, =largo_pista
+				ldr r5, [r5]
+				
+				/*Contador del loop*/
+				mov r6, #1
+				
+				loopTwo:
+					/*Si el iterador es igual a la posicion del jugador muestra al jugador*/
+					cmp r8, r6
+					bleq showPlayerTwo
+					
+					/*Si no, muestra el obstaculo siguiente*/
+					ldr r0, =track
+					bl puts
+					
+					/*Verifica que aun no se haya terminado de mostrar la pista*/
+					cmp r6, r5
+					addle r6, r6, #1
+					ble loopTwo
+					
+					/*Si ya se termino de mostrar la pista y no ha ganado se cambia de turno*/
+					b changeTurn
+				
+				showPlayerTwo:
+					ldr r0, =playerTwo
+					bl puts 
+					
+					cmp r6, r5
+					addlt r6, r6, #1
+					blt loopTwo
+					
+					/*Verifica si el jugador ya gano*/
+					ldr r9, =posicion_jugdos
+					ldr r9, [r9]
+					cmp r9, r5
+					beq winnerProcess
+				
+					b changeTurn
 			showP3Track:
-				b menu
+				ldr r0, =posicion_jugtres
+				ldr r8, [r0]
+				
+				/*Maximo del loop*/
+				ldr r5, =largo_pista
+				ldr r5, [r5]
+				
+				/*Contador del loop*/
+				mov r6, #1
+				
+				loopThree:
+					/*Si el iterador es igual a la posicion del jugador muestra al jugador*/
+					cmp r8, r6
+					beq showPlayerThree
+					
+					/*Si no, muestra el obstaculo siguiente*/
+					ldr r0, =track
+					bl puts
+					
+					/*Verifica que aun no se haya terminado de mostrar la pista*/
+					cmp r6, r5
+					addle r6, r6, #1
+					ble loopThree
+					
+					/*Si ya se termino de mostrar la pista y no ha ganado se cambia de turno*/
+					b changeTurn
+				
+				showPlayerThree:
+					ldr r0, =playerThree
+					bl puts 
+					
+					/*Compara el iterador con el largo de la pista para ver si debe repetir el loop*/
+					cmp r6, r5
+					addlt r6, r6, #1
+					blt loopThree
+					
+					/*Verifica si el jugador ya gano*/
+					ldr r9, =posicion_jugtres
+					ldr r9, [r9]
+					cmp r9, r5
+					beq winnerProcess
+				
+					/*Ultimo recurso para evitar errores: cambia de turno*/
+					b changeTurn
 			showP4Track:
-				b menu
+				ldr r0, =posicion_jugcuatro
+				ldr r8, [r0]
+				
+				/*Maximo del loop*/
+				ldr r5, =largo_pista
+				ldr r5, [r5]
+				
+				/*Contador del loop*/
+				mov r6, #1
+				
+				loopFour:
+					/*Si el iterador es igual a la posicion del jugador muestra al jugador*/
+					cmp r8, r6
+					beq showPlayerFour
+					
+					/*Si no, muestra el obstaculo siguiente*/
+					ldr r0, =track
+					bl puts
+					
+					/*Verifica que aun no se haya terminado de mostrar la pista*/
+					cmp r6, r5
+					addle r6, r6, #1
+					ble loopFour
+					
+					/*Si ya se termino de mostrar la pista y no ha ganado se cambia de turno*/
+					b changeTurn
+				
+				showPlayerFour:
+					ldr r0, =playerFour
+					bl puts 
+					
+					/*Compara el iterador con el largo de la pista para ver si debe repetir el loop*/
+					cmp r6, r5
+					addlt r6, r6, #1
+					blt loopFour
+					
+					/*Verifica si el jugador ya gano*/
+					ldr r9, =posicion_jugcuatro
+					ldr r9, [r9]
+					cmp r9, r5
+					beq winnerProcess
+				
+					/*Ultimo recurso para evitar errores: cambia de turno*/
+					b changeTurn
 			showCPTrack:
 				b menu
-			
-			showPlayer:
-				ldr r0, =player
-				bl puts 
-				
-				cmp r6, r5
-				addle r6, r6, #1
-				ble loopOne
 			
 			changeTurn:
 				ldr r0, =turno_actual
@@ -433,6 +575,13 @@ play:
 				str r3, [r0]
 				
 				b loopGame
+				
+			winnerProcess:
+				ldr r0, =despedida
+				ldr r1, =turno_actual
+				ldr r1, [r1]
+				bl printf
+				b menu
 	showInGameError:
 		ldr r0,=error_message
 		bl puts
@@ -492,5 +641,9 @@ string: 			.asciz "%s"
 char:				.asciz "%c "
 asciiArt:		 	.asciz "            O O \n           dO Ob \n          dOO OOO \n         dOOO OOOb \n        dOOOO OOOOb \n        OOOOO OOOOO \n        OOOOO OOOOO \n        OOOOO OOOOO \n        YOOOO OOOOO \n         YOOO OOOP \n    oOOOOOOOOOOOOb \n  oOOOOOOOOOOOOOOOb \n oOOOb dOOOOOOOOOOO \nOOOOOOOOOOOOOOOOOOO \nOOOOOOOOOOOOOOOOOOP \nOOOOOOOOOOOOOOOOOP \n YOOOOOOOOOOOOOOP \n   YOOOOOOOOOOOP \n  %%%%%%%%%%%%%% \n %%%%%%OOOjgsOOO \n"
 prueba:				.asciz "Prueba"
-player: 			.ascii "O"
+playerOne: 			.ascii "P1"
+playerTwo: 			.ascii "P2"
+playerThree: 		.ascii "P3"
+playerFour: 		.ascii "P4"
+playerCompu: 		.ascii "PC"
 track:				.ascii "_"
