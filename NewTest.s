@@ -358,7 +358,7 @@ play:
 			
 			showP1Track:
 				ldr r0, =posicion_juguno
-				ldr r1, [r0]
+				ldr r8, [r0]
 				
 				/*Maximo del loop*/
 				ldr r5, =largo_pista
@@ -368,14 +368,14 @@ play:
 				mov r6, #1
 				
 				loopOne:
-					cmp r1, r6
+					cmp r8, r6
 					beq showPlayer
 					
 					ldr r0, =track
 					bl puts
 					
 					cmp r6, r5
-					addle r6, r6, r1
+					addle r6, r6, #1
 					ble loopOne
 					
 					b changeTurn
@@ -416,7 +416,7 @@ play:
 					beq doYourThingComputer
 					
 					ldr r0, =turno_actual
-					mov r3, #0
+					mov r3, #1
 					str r3, [r0]
 					
 					b loopGame
@@ -425,7 +425,7 @@ play:
 				/*Hacer el proceso automata de la computadora*/
 				
 				ldr r0, =turno_actual
-				mov r3, #0
+				mov r3, #1
 				str r3, [r0]
 				
 				b loopGame
@@ -486,7 +486,7 @@ advance_info:		.asciz "WOW! Los dados no mienten! Avanzas %d espacios... \n"
 decimal:			.asciz "%d"
 string: 			.asciz "%s"
 char:				.asciz "%c "
-player: 			.asciz "O"
-track:				.ascii "_"
+player: 			.ascii "O "
+track:				.ascii "_ "
 asciiArt:		 	.asciz "            O O \n           dO Ob \n          dOO OOO \n         dOOO OOOb \n        dOOOO OOOOb \n        OOOOO OOOOO \n        OOOOO OOOOO \n        OOOOO OOOOO \n        YOOOO OOOOO \n         YOOO OOOP \n    oOOOOOOOOOOOOb \n  oOOOOOOOOOOOOOOOb \n oOOOb dOOOOOOOOOOO \nOOOOOOOOOOOOOOOOOOO \nOOOOOOOOOOOOOOOOOOP \nOOOOOOOOOOOOOOOOOP \n YOOOOOOOOOOOOOOP \n   YOOOOOOOOOOOP \n  %%%%%%%%%%%%%% \n %%%%%%OOOjgsOOO \n"
 prueba:				.asciz "Prueba"
