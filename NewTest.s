@@ -225,6 +225,16 @@ play:
 		str r5, [r0]
 		
 		loopGame:
+			/*Se verifica si le toca a la computadora o no*/
+			ldr r1, =numero_jugadores
+			ldr r1, [r1]
+			
+			ldr r3, =turno_actual
+			ldr r3, [r3]
+			
+			cmp r3, r1
+			bgt addComputer
+		
 			/*Muestra el turno actual*/
 			ldr r0, =instruccion_uno
 			ldr r1, =turno_actual
@@ -274,12 +284,6 @@ play:
 				
 				cmp r3, #4
 				beq addPFour
-				
-				ldr r1, =numero_jugadores
-				ldr r1, [r1]
-				
-				cmp r3, r1
-				bgt addComputer
 				
 				addPOne:
 					mov r0, #0
@@ -342,6 +346,27 @@ play:
 					b showP4Track
 					
 				addComputer:
+					/*Generacion de numeros aleatorios para la computadora*/
+					mov r5, #0
+				
+					mov r12, #6
+					bl RANDOM
+					
+					add r5, r5, r12
+					
+					mov r12, #6
+					bl RANDOM 
+					
+					/*Ahora r5 tiene la suma de los valores de ambos dados*/
+					add r5, r5, r12
+					
+					/*Se muestra la informacion de la computadora*/
+					ldr r0, =computer_advance
+					mov r1, r5
+					bl printf
+					
+					
+					/*Asignacion de la posicion a la variable correspondiente*/
 					mov r0, #0
 				
 					ldr r1, =posicion_computa
@@ -536,7 +561,50 @@ play:
 					/*Ultimo recurso para evitar errores: cambia de turno*/
 					b changeTurn
 			showCPTrack:
-				b menu
+				ldr r0, =posicion_computa
+				ldr r8, [r0]
+				
+				/*Maximo del loop*/
+				ldr r5, =largo_pista
+				ldr r5, [r5]
+				
+				/*Contador del loop*/
+				mov r6, #1
+				
+				loopCompu:
+					/*Si el iterador es igual a la posicion del jugador muestra al jugador*/
+					cmp r8, r6
+					beq showPlayerCompu
+					
+					/*Si no, muestra el obstaculo siguiente*/
+					ldr r0, =track
+					bl puts
+					
+					/*Verifica que aun no se haya terminado de mostrar la pista*/
+					cmp r6, r5
+					addle r6, r6, #1
+					ble loopCompu
+					
+					/*Si ya se termino de mostrar la pista y no ha ganado se cambia de turno*/
+					b changeTurn
+				
+				showPlayerCompu:
+					ldr r0, =playerCompu
+					bl puts 
+					
+					/*Compara el iterador con el largo de la pista para ver si debe repetir el loop*/
+					cmp r6, r5
+					addlt r6, r6, #1
+					blt loopCompu
+					
+					/*Verifica si el jugador ya gano*/
+					ldr r9, =posicion_computa
+					ldr r9, [r9]
+					cmp r9, r5
+					bge computerWin
+				
+					/*Ultimo recurso para evitar errores: cambia de turno*/
+					b changeTurn
 			
 			changeTurn:
 				ldr r0, =turno_actual
@@ -582,6 +650,13 @@ play:
 				ldr r1, [r1]
 				bl printf
 				b menu
+				
+			computerWin:
+				ldr r0, =autoGoodbye
+				bl puts
+				
+				b menu
+				
 	showInGameError:
 		ldr r0,=error_message
 		bl puts
@@ -635,7 +710,9 @@ instruccion_uno: 	.asciz "Jugador %d presione ENTER para tirar los dados... "
 error_message: 		.asciz "Error: ingrese una opcion valida... \n"
 error_message_two: 	.asciz "Error:  \n"
 despedida: 			.asciz "***GAME OVER***GAME OVER***GAME OVER*** \nGano el jugador %d ! Felicidades... \n"
+autoGoodbye:		.asciz "***GAME OVER***GAME OVER***GAME OVER*** \nGano la computadora :( Mejor suerte a la proxima... \n"
 advance_info:		.asciz "WOW! Los dados no mienten! Avanzas %d espacios... \n"
+computer_advance:	.asciz "Rayos, la computadora esta hackeando los dados! Avanza %d espacios... \n"
 decimal:			.asciz "%d"
 string: 			.asciz "%s"
 char:				.asciz "%c "
