@@ -379,6 +379,12 @@ play:
 					
 					mov r10, r0
 					
+					/*Se reinicia el turno para el jugador 1*/
+					ldr r0, =turno_actual
+					mov r3, #0
+					str r3, [r0]
+					
+					/*Se muestra el avance de la computaora y se cede el turno al siguiente jugador*/
 					b showCPTrack
 			
 			showP1Track:
@@ -637,11 +643,6 @@ play:
 			
 			doYourThingComputer:
 				/*Hacer el proceso automata de la computadora*/
-				
-				ldr r0, =turno_actual
-				mov r3, #1
-				str r3, [r0]
-				
 				b loopGame
 				
 			winnerProcess:
