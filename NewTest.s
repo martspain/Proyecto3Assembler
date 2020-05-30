@@ -233,7 +233,7 @@ play:
 			ldr r3, [r3]
 			
 			cmp r3, r1
-			bge addComputer
+			bgt addComputer
 		
 			/*Muestra el turno actual*/
 			ldr r0, =instruccion_uno
@@ -643,6 +643,10 @@ play:
 			
 			doYourThingComputer:
 				/*Hacer el proceso automata de la computadora*/
+				ldr r0, =turno_actual
+				ldr r3, [r0]
+				add r3, r3, #1
+				str r3, [r0]
 				b loopGame
 				
 			winnerProcess:
