@@ -233,7 +233,7 @@ play:
 			ldr r3, [r3]
 			
 			cmp r3, r1
-			bgt addComputer
+			bge addComputer
 		
 			/*Muestra el turno actual*/
 			ldr r0, =instruccion_uno
