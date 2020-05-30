@@ -226,37 +226,6 @@ play:
 		
 		loopGame:
 			
-			/*Se verifica que nadie haya ganado*/
-			/*Verifica si el jugador 1 ya gano*/
-			ldr r9, =posicion_juguno
-			ldr r9, [r9]
-			cmp r9, r5
-			bge winnerProcess
-			
-			/*Verifica si el jugador 2 ya gano*/
-			ldr r9, =posicion_jugdos
-			ldr r9, [r9]
-			cmp r9, r5
-			bge winnerProcess
-			
-			/*Verifica si el jugador 3 ya gano*/
-			ldr r9, =posicion_jugtres
-			ldr r9, [r9]
-			cmp r9, r5
-			bge winnerProcess
-			
-			/*Verifica si el jugador 4 ya gano*/
-			ldr r9, =posicion_jugcuatro
-			ldr r9, [r9]
-			cmp r9, r5
-			bge winnerProcess
-			
-			/*Verifica si la computadora ya gano*/
-			ldr r9, =posicion_computa
-			ldr r9, [r9]
-			cmp r9, r5
-			bge computerWin
-			
 			/*Se verifica si le toca a la computadora o no*/
 			ldr r1, =numero_jugadores
 			ldr r1, [r1]
@@ -441,6 +410,12 @@ play:
 					addle r6, r6, #1
 					ble loopOne
 					
+					/*Verifica si el jugador ya gano*/
+					ldr r9, =posicion_juguno
+					ldr r9, [r9]
+					cmp r9, r5
+					bge winnerProcess
+					
 					/*Si ya se termino de mostrar la pista y no ha ganado se cambia de turno*/
 					b changeTurn
 				
@@ -487,6 +462,12 @@ play:
 					addle r6, r6, #1
 					ble loopTwo
 					
+					/*Verifica si el jugador ya gano*/
+					ldr r9, =posicion_jugdos
+					ldr r9, [r9]
+					cmp r9, r5
+					bge winnerProcess
+					
 					/*Si ya se termino de mostrar la pista y no ha ganado se cambia de turno*/
 					b changeTurn
 				
@@ -529,6 +510,12 @@ play:
 					cmp r6, r5
 					addle r6, r6, #1
 					ble loopThree
+					
+					/*Verifica si el jugador ya gano*/
+					ldr r9, =posicion_jugtres
+					ldr r9, [r9]
+					cmp r9, r5
+					bge winnerProcess
 					
 					/*Si ya se termino de mostrar la pista y no ha ganado se cambia de turno*/
 					b changeTurn
@@ -575,6 +562,12 @@ play:
 					addle r6, r6, #1
 					ble loopFour
 					
+					/*Verifica si el jugador ya gano*/
+					ldr r9, =posicion_jugcuatro
+					ldr r9, [r9]
+					cmp r9, r5
+					bge winnerProcess
+					
 					/*Si ya se termino de mostrar la pista y no ha ganado se cambia de turno*/
 					b changeTurn
 				
@@ -619,6 +612,12 @@ play:
 					cmp r6, r5
 					addle r6, r6, #1
 					ble loopCompu
+					
+					/*Verifica si el jugador ya gano*/
+					ldr r9, =posicion_computa
+					ldr r9, [r9]
+					cmp r9, r5
+					bge computerWin
 					
 					/*Si ya se termino de mostrar la pista y no ha ganado se cambia de turno*/
 					b changeTurn
