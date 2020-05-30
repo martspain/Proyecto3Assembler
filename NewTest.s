@@ -6,7 +6,7 @@ Proyecto 3
 Universidad Del Valle de Guatemala
 
 Autores:
-- Diana Sosa			Carné: 
+- Diana Sosa			Carné: 18842
 - Sebastián Maldonado 	Carné: 18003
 - Martín España 		Carné: 19258
 
@@ -232,8 +232,10 @@ play:
 			ldr r3, =turno_actual
 			ldr r3, [r3]
 			
-			cmp r3, r1
-			bgt addComputer
+			mov r2, #0
+			
+			cmp r3, r2
+			beq addComputer
 		
 			/*Muestra el turno actual*/
 			ldr r0, =instruccion_uno
@@ -378,11 +380,6 @@ play:
 					str r0, [r1]
 					
 					mov r10, r0
-					
-					/*Se reinicia el turno para el jugador 1*/
-					ldr r0, =turno_actual
-					mov r3, #0
-					str r3, [r0]
 					
 					/*Se muestra el avance de la computaora y se cede el turno al siguiente jugador*/
 					b showCPTrack
@@ -644,8 +641,7 @@ play:
 			doYourThingComputer:
 				/*Hacer el proceso automata de la computadora*/
 				ldr r0, =turno_actual
-				ldr r3, [r0]
-				add r3, r3, #1
+				mov r3, #0
 				str r3, [r0]
 				b loopGame
 				
