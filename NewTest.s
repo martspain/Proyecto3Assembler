@@ -225,6 +225,38 @@ play:
 		str r5, [r0]
 		
 		loopGame:
+			
+			/*Se verifica que nadie haya ganado*/
+			/*Verifica si el jugador 1 ya gano*/
+			ldr r9, =posicion_juguno
+			ldr r9, [r9]
+			cmp r9, r5
+			bge winnerProcess
+			
+			/*Verifica si el jugador 2 ya gano*/
+			ldr r9, =posicion_jugdos
+			ldr r9, [r9]
+			cmp r9, r5
+			bge winnerProcess
+			
+			/*Verifica si el jugador 3 ya gano*/
+			ldr r9, =posicion_jugtres
+			ldr r9, [r9]
+			cmp r9, r5
+			bge winnerProcess
+			
+			/*Verifica si el jugador 4 ya gano*/
+			ldr r9, =posicion_jugcuatro
+			ldr r9, [r9]
+			cmp r9, r5
+			bge winnerProcess
+			
+			/*Verifica si la computadora ya gano*/
+			ldr r9, =posicion_computa
+			ldr r9, [r9]
+			cmp r9, r5
+			bge computerWin
+			
 			/*Se verifica si le toca a la computadora o no*/
 			ldr r1, =numero_jugadores
 			ldr r1, [r1]
