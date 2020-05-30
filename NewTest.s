@@ -352,12 +352,12 @@ play:
 					/*Generacion de numeros aleatorios para la computadora*/
 					mov r5, #0
 				
-					mov r12, #6
+					mov r12, #5
 					bl RANDOM
 					
 					add r5, r5, r12
 					
-					mov r12, #6
+					mov r12, #5
 					bl RANDOM 
 					
 					/*Ahora r5 tiene la suma de los valores de ambos dados*/

@@ -6,7 +6,7 @@ Proyecto 3
 Universidad Del Valle de Guatemala
 
 Autores:
-- Diana Sosa			Carné: 
+- Diana Sosa			Carné: 18842
 - Sebastián Maldonado 	Carné: 18003
 - Martín España 		Carné: 19258
 
@@ -98,6 +98,23 @@ showError:
 
 play:
 
+	/*Se inicializan las posiciones de los jugadores*/
+	ldr r0, =posicion_juguno
+	mov r1, #0
+	str r1, [r0]
+	ldr r0, =posicion_jugdos
+	mov r1, #0
+	str r1, [r0]
+	ldr r0, =posicion_jugtres
+	mov r1, #0
+	str r1, [r0]
+	ldr r0, =posicion_jugcuatro
+	mov r1, #0
+	str r1, [r0]
+	ldr r0, =posicion_computa
+	mov r1, #0
+	str r1, [r0]
+	
 	numberOfPlayers:
 		/*Se solicita el numero de jugadores*/
 		ldr r0,=opciones_uno
@@ -172,8 +189,6 @@ play:
 		/*Se utiliza r11 como bandera para saber si se juega con la computadora o no*/
 		mov r11, #0
 		
-		b raceLength
-		
 	raceLength:
 		ldr r0,=opciones_tres
 		bl puts
@@ -205,174 +220,475 @@ play:
 		sub r9, r9, #1
 		
 	startGame:
-		/*Se utiliza r8 como contador para saber a que jugador le toca jugar*/
-		mov r8, #1
+		mov r5, #1
+		ldr r0, =turno_actual
+		str r5, [r0]
 		
-	playerTurn:
-		ldr r10,=numero_jugadores
-		ldr r10, [r10]
-		cmp r8, r10
-		ble throwDices
+		loopGame:
+			
+			/*Se verifica si le toca a la computadora o no*/
+			ldr r1, =numero_jugadores
+			ldr r1, [r1]
+			
+			ldr r3, =turno_actual
+			ldr r3, [r3]
+			
+			mov r2, #0
+			
+			cmp r3, r2
+			beq addComputer
 		
-		bgt computerCheck
-	
-	throwDices:
-		ldr r0,=instruccion_uno
-		mov r1, r8
-		bl printf
-		/*Se solicita al usuario  presionar ENTER para continuar */
-		ldr r0,=string
-		ldr r1,=almacen
-		bl scanf
-	
-	generateNumbers:
-		/*Aqui se utiliza la subrutina para generar numeros aleatorios*/
-		/*Se reserva r12 para el paso de parametros (numero maximo) */
-		/*bl RANDOM*/
-		/*El valor generado retornara en r12*/
-		
-		mov r5, #0
-		
-		mov r12, #6
-		bl RANDOM
-		
-		add r5, r5, r12
-		
-		mov r12, #6
-		bl RANDOM 
-		
-		/*Ahora r5 tiene la suma de los valores de ambos dados*/
-		add r5, r5, r12
-		
-		ldr r0, =advance_info
-		mov r1, r5
-		bl printf
-		
-	/*Se añade la suma a la posicion actual de ambos*/
-	trackPositions:
-		cmp r8, #1
-		beq getPlayerOne
-		
-		cmp r8, #2
-		beq getPlayerTwo
-		
-		cmp r8, #3
-		beq getPlayerThree
-		
-		cmp r8, #4
-		beq getPlayerFour
-		
-		b getComputer
-	
-	getPlayerOne:
-		ldr r3,=posicion_juguno
-		ldr r3, [r3]
-		add r2, r5, r3
-		ldr r3, =posicion_juguno
-		str r2, [r3]
-		
-		b showTrack
-	
-	getPlayerTwo:
-		ldr r3,=posicion_jugdos
-		ldr r3, [r3]
-		add r2, r5, r3
-		ldr r3, =posicion_jugdos
-		str r2, [r3]
-		
-		b showTrack
-	
-	getPlayerThree:
-		ldr r3,=posicion_jugtres
-		ldr r3, [r3]
-		add r2, r5, r3
-		ldr r3, =posicion_jugtres
-		str r2, [r3]
-		
-		b showTrack
-	
-	getPlayerFour:
-		ldr r3,=posicion_jugcuatro
-		ldr r3, [r3]
-		add r2, r5, r3
-		ldr r3, =posicion_jugcuatro
-		str r2, [r3]
-		
-		b showTrack
-		
-	getComputer:
-		ldr r3,=posicion_computa
-		ldr r3, [r3]
-		add r2, r5, r3
-		ldr r3, =posicion_computa
-		str r2, [r3]
-	
-	showTrack:
-		
-		/*R7 tiene el contador para el recorrido del array*/
-		mov r7, #1
-		
-	showArray:
-		
-		/*Muestra el primer elemento*/
-		ldr r0,=string
-		ldr r1,=track
-		ldr r1, [r1]
-		bl printf 
-		
-	loopTrack:
-		mov r0, #4
-		
-		/*r6 tiene la posicion actual en el array*/
-		mul r6, r7, r0
-		
-		/*Si la posicion actial en el array es igual a la posicion actual del jugador muestra al jugador*/
-		cmp r6, r5
-		beq showPlayer
-		
-		/*Si no, muestra el elemento normalmente*/
-		ldr r0,=string
-		ldr r1,=track
-		add r1, r1, r6
-		ldr r1, [r1]
-		bl printf 
-		
-		/*Se suma uno al contador del array, y se compara para ver si ya termino de recorrerlo*/
-		add r7, #1
-		cmp r7, r9
-		ble loopTrack
-		bgt prepareTurn
-	
-	/*Muestra al jugador en el array y vuelve al recorrido*/
-	showPlayer:
-		ldr r0,=string
-		ldr r1,=player
-		ldr r1, [r1]
-		bl printf
-		
-		add r7, #1
-		cmp r7, r9
-		ble loopTrack
-		
-	computerCheck:
-		cmp r11, #1
-		beq computerTurn
-		blt repeatTurn
-	
-	computerTurn:
-		
-		b repeatTurn
-	
-	prepareTurn:
-		add r8, r8, #1
-		
-		b playerTurn
-	
-	repeatTurn:
-		mov r8, #1
-		
-		b playerTurn
+			/*Muestra el turno actual*/
+			ldr r0, =instruccion_uno
+			ldr r1, =turno_actual
+			ldr r1, [r1]
+			bl printf
+			
+			/*Limpia el buffer*/
+			bl getchar 
+			
+			/*Recopila el enter del usuario*/
+			bl getchar
+			
+			throwDices:
+				/*Aqui se utiliza la subrutina para generar numeros aleatorios*/
+				/*Se reserva r12 para el paso de parametros (numero maximo) */
+				/*bl RANDOM*/
+				/*El valor generado retornara en r12*/
+				
+				mov r5, #0
+				
+				mov r12, #6
+				bl RANDOM
+				
+				add r5, r5, r12
+				
+				mov r12, #6
+				bl RANDOM 
+				
+				/*Ahora r5 tiene la suma de los valores de ambos dados*/
+				add r5, r5, r12
+				
+				ldr r0, =advance_info
+				mov r1, r5
+				bl printf
+			
+				ldr r3, =turno_actual
+				ldr r3, [r3]
+				
+				cmp r3, #1
+				beq addPOne
+				
+				cmp r3, #2
+				beq addPTwo
+				
+				cmp r3, #3
+				beq addPThree
+				
+				cmp r3, #4
+				beq addPFour
+				
+				addPOne:
+					mov r0, #0
+				
+					ldr r1, =posicion_juguno
+					ldr r1, [r1]
+					
+					add r0, r1, r5
+					
+					ldr r1, =posicion_juguno
+					str r0, [r1]
+					
+					mov r10, r0
+					
+					b showP1Track
+				
+				addPTwo:
+					mov r0, #0
+				
+					ldr r1, =posicion_jugdos
+					ldr r1, [r1]
+					
+					add r0, r1, r5
+					
+					ldr r1, =posicion_jugdos
+					str r0, [r1]
+					
+					mov r10, r0
+					
+					b showP2Track
+					
+				addPThree:
+					mov r0, #0
+				
+					ldr r1, =posicion_jugtres
+					ldr r1, [r1]
+					
+					add r0, r1, r5
+					
+					ldr r1, =posicion_jugtres
+					str r0, [r1]
+					
+					mov r10, r0
+					
+					b showP3Track
+					
+				addPFour:
+					mov r0, #0
+				
+					ldr r1, =posicion_jugcuatro
+					ldr r1, [r1]
+					
+					add r0, r1, r5
+					
+					ldr r1, =posicion_jugcuatro
+					str r0, [r1]
+					
+					mov r10, r0
+					
+					b showP4Track
+					
+				addComputer:
+					/*Generacion de numeros aleatorios para la computadora*/
+					mov r5, #0
+				
+					mov r12, #5
+					bl RANDOM
+					
+					add r5, r5, r12
+					
+					mov r12, #5
+					bl RANDOM 
+					
+					/*Ahora r5 tiene la suma de los valores de ambos dados*/
+					add r5, r5, r12
+					
+					/*Se muestra la informacion de la computadora*/
+					ldr r0, =computer_advance
+					mov r1, r5
+					bl printf
+					
+					
+					/*Asignacion de la posicion a la variable correspondiente*/
+					mov r0, #0
+				
+					ldr r1, =posicion_computa
+					ldr r1, [r1]
+					
+					add r0, r1, r5
+					
+					ldr r1, =posicion_computa
+					str r0, [r1]
+					
+					mov r10, r0
+					
+					/*Se muestra el avance de la computaora y se cede el turno al siguiente jugador*/
+					b showCPTrack
+			
+			showP1Track:
+				ldr r0, =posicion_juguno
+				ldr r8, [r0]
+				
+				/*Maximo del loop*/
+				ldr r5, =largo_pista
+				ldr r5, [r5]
+				
+				/*Contador del loop*/
+				mov r6, #1
+				
+				loopOne:
+					/*Si el iterador es igual a la posicion del jugador muestra al jugador*/
+					cmp r8, r6
+					beq showPlayerOne
+					
+					/*Si no, muestra el obstaculo siguiente*/
+					ldr r0, =track
+					bl puts
+					
+					/*Verifica que aun no se haya terminado de mostrar la pista*/
+					cmp r6, r5
+					addle r6, r6, #1
+					ble loopOne
+					
+					/*Verifica si el jugador ya gano*/
+					ldr r9, =posicion_juguno
+					ldr r9, [r9]
+					cmp r9, r5
+					bge winnerProcess
+					
+					/*Si ya se termino de mostrar la pista y no ha ganado se cambia de turno*/
+					b changeTurn
+				
+				showPlayerOne:
+					ldr r0, =playerOne
+					bl puts 
+					
+					/*Compara el iterador con el largo de la pista para ver si debe repetir el loop*/
+					cmp r6, r5
+					addlt r6, r6, #1
+					blt loopOne
+					
+					/*Verifica si el jugador ya gano*/
+					ldr r9, =posicion_juguno
+					ldr r9, [r9]
+					cmp r9, r5
+					bge winnerProcess
+				
+					/*Ultimo recurso para evitar errores: cambia de turno*/
+					b changeTurn
 
+			showP2Track:
+				ldr r0, =posicion_jugdos
+				ldr r8, [r0]
+				
+				/*Maximo del loop*/
+				ldr r5, =largo_pista
+				ldr r5, [r5]
+				
+				/*Contador del loop*/
+				mov r6, #1
+				
+				loopTwo:
+					/*Si el iterador es igual a la posicion del jugador muestra al jugador*/
+					cmp r8, r6
+					bleq showPlayerTwo
+					
+					/*Si no, muestra el obstaculo siguiente*/
+					ldr r0, =track
+					bl puts
+					
+					/*Verifica que aun no se haya terminado de mostrar la pista*/
+					cmp r6, r5
+					addle r6, r6, #1
+					ble loopTwo
+					
+					/*Verifica si el jugador ya gano*/
+					ldr r9, =posicion_jugdos
+					ldr r9, [r9]
+					cmp r9, r5
+					bge winnerProcess
+					
+					/*Si ya se termino de mostrar la pista y no ha ganado se cambia de turno*/
+					b changeTurn
+				
+				showPlayerTwo:
+					ldr r0, =playerTwo
+					bl puts 
+					
+					cmp r6, r5
+					addlt r6, r6, #1
+					blt loopTwo
+					
+					/*Verifica si el jugador ya gano*/
+					ldr r9, =posicion_jugdos
+					ldr r9, [r9]
+					cmp r9, r5
+					bge winnerProcess
+				
+					b changeTurn
+			showP3Track:
+				ldr r0, =posicion_jugtres
+				ldr r8, [r0]
+				
+				/*Maximo del loop*/
+				ldr r5, =largo_pista
+				ldr r5, [r5]
+				
+				/*Contador del loop*/
+				mov r6, #1
+				
+				loopThree:
+					/*Si el iterador es igual a la posicion del jugador muestra al jugador*/
+					cmp r8, r6
+					beq showPlayerThree
+					
+					/*Si no, muestra el obstaculo siguiente*/
+					ldr r0, =track
+					bl puts
+					
+					/*Verifica que aun no se haya terminado de mostrar la pista*/
+					cmp r6, r5
+					addle r6, r6, #1
+					ble loopThree
+					
+					/*Verifica si el jugador ya gano*/
+					ldr r9, =posicion_jugtres
+					ldr r9, [r9]
+					cmp r9, r5
+					bge winnerProcess
+					
+					/*Si ya se termino de mostrar la pista y no ha ganado se cambia de turno*/
+					b changeTurn
+				
+				showPlayerThree:
+					ldr r0, =playerThree
+					bl puts 
+					
+					/*Compara el iterador con el largo de la pista para ver si debe repetir el loop*/
+					cmp r6, r5
+					addlt r6, r6, #1
+					blt loopThree
+					
+					/*Verifica si el jugador ya gano*/
+					ldr r9, =posicion_jugtres
+					ldr r9, [r9]
+					cmp r9, r5
+					bge winnerProcess
+				
+					/*Ultimo recurso para evitar errores: cambia de turno*/
+					b changeTurn
+			showP4Track:
+				ldr r0, =posicion_jugcuatro
+				ldr r8, [r0]
+				
+				/*Maximo del loop*/
+				ldr r5, =largo_pista
+				ldr r5, [r5]
+				
+				/*Contador del loop*/
+				mov r6, #1
+				
+				loopFour:
+					/*Si el iterador es igual a la posicion del jugador muestra al jugador*/
+					cmp r8, r6
+					beq showPlayerFour
+					
+					/*Si no, muestra el obstaculo siguiente*/
+					ldr r0, =track
+					bl puts
+					
+					/*Verifica que aun no se haya terminado de mostrar la pista*/
+					cmp r6, r5
+					addle r6, r6, #1
+					ble loopFour
+					
+					/*Verifica si el jugador ya gano*/
+					ldr r9, =posicion_jugcuatro
+					ldr r9, [r9]
+					cmp r9, r5
+					bge winnerProcess
+					
+					/*Si ya se termino de mostrar la pista y no ha ganado se cambia de turno*/
+					b changeTurn
+				
+				showPlayerFour:
+					ldr r0, =playerFour
+					bl puts 
+					
+					/*Compara el iterador con el largo de la pista para ver si debe repetir el loop*/
+					cmp r6, r5
+					addlt r6, r6, #1
+					blt loopFour
+					
+					/*Verifica si el jugador ya gano*/
+					ldr r9, =posicion_jugcuatro
+					ldr r9, [r9]
+					cmp r9, r5
+					bge winnerProcess
+				
+					/*Ultimo recurso para evitar errores: cambia de turno*/
+					b changeTurn
+			showCPTrack:
+				ldr r0, =posicion_computa
+				ldr r8, [r0]
+				
+				/*Maximo del loop*/
+				ldr r5, =largo_pista
+				ldr r5, [r5]
+				
+				/*Contador del loop*/
+				mov r6, #1
+				
+				loopCompu:
+					/*Si el iterador es igual a la posicion del jugador muestra al jugador*/
+					cmp r8, r6
+					beq showPlayerCompu
+					
+					/*Si no, muestra el obstaculo siguiente*/
+					ldr r0, =track
+					bl puts
+					
+					/*Verifica que aun no se haya terminado de mostrar la pista*/
+					cmp r6, r5
+					addle r6, r6, #1
+					ble loopCompu
+					
+					/*Verifica si el jugador ya gano*/
+					ldr r9, =posicion_computa
+					ldr r9, [r9]
+					cmp r9, r5
+					bge computerWin
+					
+					/*Si ya se termino de mostrar la pista y no ha ganado se cambia de turno*/
+					b changeTurn
+				
+				showPlayerCompu:
+					ldr r0, =playerCompu
+					bl puts 
+					
+					/*Compara el iterador con el largo de la pista para ver si debe repetir el loop*/
+					cmp r6, r5
+					addlt r6, r6, #1
+					blt loopCompu
+					
+					/*Verifica si el jugador ya gano*/
+					ldr r9, =posicion_computa
+					ldr r9, [r9]
+					cmp r9, r5
+					bge computerWin
+				
+					/*Ultimo recurso para evitar errores: cambia de turno*/
+					b changeTurn
+			
+			changeTurn:
+				ldr r0, =turno_actual
+				ldr r0, [r0]
+				
+				ldr r1, =numero_jugadores
+				ldr r1, [r1]
+				
+				cmp r0, r1
+				blt nextPlayer
+				bge computerTurn 
+				
+				nextPlayer:
+					ldr r0, =turno_actual
+					ldr r3, [r0]
+					add r3, r3, #1
+					str r3, [r0]
+					
+					b loopGame
+				
+				computerTurn:
+					cmp r11, #1
+					beq doYourThingComputer
+					
+					ldr r0, =turno_actual
+					mov r3, #1
+					str r3, [r0]
+					
+					b loopGame
+			
+			doYourThingComputer:
+				/*Hacer el proceso automata de la computadora*/
+				ldr r0, =turno_actual
+				mov r3, #0
+				str r3, [r0]
+				b loopGame
+				
+			winnerProcess:
+				ldr r0, =despedida
+				ldr r1, =turno_actual
+				ldr r1, [r1]
+				bl printf
+				b menu
+				
+			computerWin:
+				ldr r0, =autoGoodbye
+				bl puts
+				
+				b menu
+				
 	showInGameError:
 		ldr r0,=error_message
 		bl puts
@@ -414,6 +730,7 @@ posicion_jugdos: 	.word 0
 posicion_jugtres: 	.word 0
 posicion_jugcuatro:	.word 0
 posicion_computa:	.word 0
+turno_actual:       .word 0
 
 /*Mensajes para mostrar en pantalla*/
 titulo: 			.asciz "Universidad del Valle de Guatemala \nCarrera de Obstáculos \nAutores: Diana Sosa, Sebastián Maldonado y Martín España \n"
@@ -425,12 +742,17 @@ instruccion_uno: 	.asciz "Jugador %d presione ENTER para tirar los dados... "
 error_message: 		.asciz "Error: ingrese una opcion valida... \n"
 error_message_two: 	.asciz "Error:  \n"
 despedida: 			.asciz "***GAME OVER***GAME OVER***GAME OVER*** \nGano el jugador %d ! Felicidades... \n"
+autoGoodbye:		.asciz "***GAME OVER***GAME OVER***GAME OVER*** \nGano la computadora :( Mejor suerte a la proxima... \n"
 advance_info:		.asciz "WOW! Los dados no mienten! Avanzas %d espacios... \n"
+computer_advance:	.asciz "Rayos, la computadora esta hackeando los dados! Avanza %d espacios... \n"
 decimal:			.asciz "%d"
 string: 			.asciz "%s"
-player: 			.asciz "O"
-track:				.asciz "_","_","_","_","_","_","_","_","_","_","_","_","_","_","_","_","_","_","_","_","_","_","_","_","_","_","_","_","_","_","_","_","_","_","_","_","_","_","_","_","_","_","_","_","_","_","_","_","_","_"
+char:				.asciz "%c "
 asciiArt:		 	.asciz "            O O \n           dO Ob \n          dOO OOO \n         dOOO OOOb \n        dOOOO OOOOb \n        OOOOO OOOOO \n        OOOOO OOOOO \n        OOOOO OOOOO \n        YOOOO OOOOO \n         YOOO OOOP \n    oOOOOOOOOOOOOb \n  oOOOOOOOOOOOOOOOb \n oOOOb dOOOOOOOOOOO \nOOOOOOOOOOOOOOOOOOO \nOOOOOOOOOOOOOOOOOOP \nOOOOOOOOOOOOOOOOOP \n YOOOOOOOOOOOOOOP \n   YOOOOOOOOOOOP \n  %%%%%%%%%%%%%% \n %%%%%%OOOjgsOOO \n"
 prueba:				.asciz "Prueba"
-
-	
+playerOne: 			.asciz "P1"
+playerTwo: 			.asciz "P2"
+playerThree: 		.asciz "P3"
+playerFour: 		.asciz "P4"
+playerCompu: 		.asciz "PC"
+track:				.asciz "_"
